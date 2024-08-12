@@ -7,11 +7,24 @@ import './App.css';
 const App = () => {
   const [transactions, setTransactions] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8001/transactions')
-      .then(response => response.json())
-      .then(data => setTransactions(data));
+    const fetchTransactions = async () => {
+      try {
+        const response = await fetch('http://localhost:8001/transactions');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setTransactions(data);
+      } catch (error) {
+        setError(error.message);
+        console.error('There was a problem with the fetch operation:', error);
+      }
+    };
+
+    fetchTransactions();
   }, []);
 
   const handleAddTransaction = (newTransaction) => {
@@ -31,10 +44,10 @@ const App = () => {
       <h1>Bank of Flatiron</h1>
       <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
       <TransactionForm onAddTransaction={handleAddTransaction} />
+      {error && <p className="error">Error: {error}</p>}
       <TransactionTable transactions={filteredTransactions} />
     </div>
   );
 };
 
 export default App;
-
