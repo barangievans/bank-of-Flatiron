@@ -31,4 +31,4 @@ The Bank of Flatiron is a React application designed to manage and view bank tra
    ```bash
    git clone https://github.com/barangievans/bank-of-flatiron.git
    cd bank-of-flatiron
-   Hosted github link:
+   Hosted github link:https://barangievans.github.io/bank-of-Flatiron/
