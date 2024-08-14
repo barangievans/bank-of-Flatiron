@@ -1,13 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import './SearchBar.css';
 
-const SearchBar = ({ searchTerm, onSearch }) => {
+const SearchBar = ({ setSearchTerm, transactions }) => {
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+
+  useEffect(() => {
+    if (selectedTransaction) {
+      setSearchTerm(selectedTransaction.description);
+    }
+  }, [selectedTransaction, setSearchTerm]);
+
+  const handleChange = (event) => {
+    const selectedId = parseInt(event.target.value, 10);
+    const selected = transactions.find(transaction => transaction.id === selectedId);
+    setSelectedTransaction(selected || null);
+  };
+
   return (
-    <input
-      type="text"
-      placeholder="Search transactions"
-      value={searchTerm}
-      onChange={(e) => onSearch(e.target.value)}
-    />
+    <div className="search-bar">
+      <input
+        type="text"
+        placeholder="Search transactions..."
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <select
+        value={selectedTransaction ? selectedTransaction.id : ''}
+        onChange={handleChange}
+      >
+        <option value="">Select a transaction</option>
+        {transactions.map(transaction => (
+          <option key={transaction.id} value={transaction.id}>
+            {transaction.description} - {transaction.date}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
 

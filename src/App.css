@@ -8,30 +8,19 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+table, th, td {
+  border: 1px solid black;
 }
 
-th {
-  background-color: #f4f4f4;
+th, td {
+  padding: 10px;
+  text-align: left;
 }
 
 input {
-  margin: 5px;
-  padding: 8px;
+  margin-right: 10px;
 }
 
 button {
-  padding: 10px;
-}
-
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  padding: 5px 10px;
 }

@@ -1,42 +1,47 @@
 import React, { useState } from 'react';
 
-const TransactionForm = ({ onAddTransaction }) => {
+const TransactionForm = ({ addTransaction }) => {
   const [description, setDescription] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
+  const [date, setDate] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newTransaction = {
-      description,
-      amount: parseFloat(amount),
-      category
-    };
-    onAddTransaction(newTransaction);
-    setDescription('');
-    setAmount('');
-    setCategory('');
+    if (description && amount && category && date) {
+      addTransaction({ description, amount: parseFloat(amount), category, date });
+      setDescription('');
+      setAmount('');
+      setCategory('');
+      setDate('');
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        placeholder="Description"
       />
       <input
         type="number"
-        placeholder="Amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
+        placeholder="Amount"
+        step="0.01"
       />
       <input
         type="text"
-        placeholder="Category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
+        placeholder="Category"
+      />
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
       />
       <button type="submit">Add Transaction</button>
     </form>
@@ -44,3 +49,5 @@ const TransactionForm = ({ onAddTransaction }) => {
 };
 
 export default TransactionForm;
+
+

@@ -1,38 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import TransactionTable from './components/TransactionTable';
-import TransactionForm from './components/TransactionForm';
 import SearchBar from './components/SearchBar';
+import TransactionForm from './components/TransactionForm';
+import TransactionTable from './components/TransactionTable';
 import './App.css';
 
-const App = () => {
+function App() {
   const [transactions, setTransactions] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Mock fetch function with static data
     const fetchTransactions = async () => {
-      try {
-        const response = await fetch('http://localhost:8001/transactions');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setTransactions(data);
-      } catch (error) {
-        setError(error.message);
-        console.error('There was a problem with the fetch operation:', error);
-      }
+      // Static data
+      const data = {
+        "transactions": [
+          { "id": 1, "date": "2019-12-01", "description": "Paycheck from Bob's Burgers", "category": "Income", "amount": 1000 },
+          { "id": 2, "date": "2019-12-01", "description": "South by Southwest Quinoa Bowl at Fresh & Co", "category": "Food", "amount": -10.55 },
+          { "id": 3, "date": "2019-12-02", "description": "South by Southwest Quinoa Bowl at Fresh & Co", "category": "Food", "amount": -10.55 },
+          { "id": 4, "date": "2019-12-04", "description": "Sunglasses, Urban Outfitters", "category": "Fashion", "amount": -24.99 },
+          { "id": 5, "date": "2019-12-06", "description": "Venmo, Alice Pays you for Burrito", "category": "Food", "amount": 8.75 },
+          { "id": 6, "date": "2019-12-06", "description": "Chipotle", "category": "Food", "amount": -17.59 },
+          { "id": 7, "date": "2019-12-07", "description": "Birthday Check from Grandma", "category": "Gift", "amount": 50 },
+          { "id": 8, "date": "2019-12-09", "description": "Lyft Ride", "category": "Transportation", "amount": -13.25 },
+          { "id": 9, "date": "2019-12-11", "description": "Paycheck from Bob's Burgers", "category": "Income", "amount": 1000 },
+          { "id": 10, "date": "2019-12-16", "description": "Tickets, Flatiron Multiplex Cinemas", "category": "Entertainment", "amount": -24 },
+          { "id": 11, "date": "2019-12-16", "description": "MTA Vending Machine: MetroCard", "category": "Transportation", "amount": -116.39 },
+          { "id": 12, "date": "2019-12-17", "description": "Venmo, Pay Roommate for Rent", "category": "Housing", "amount": -975 },
+          { "id": 13, "date": "2022-07-09", "description": "Office lunch", "category": "Food", "amount": 2000 },
+          { "id": 14, "date": "2022-07-09", "description": "Office lunch Wednesday", "category": "Food", "amount": 3000 }
+        ]
+      };
+
+      // Simulate a network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      console.log('Fetched transactions (mock):', data);
+      setTransactions(data.transactions);
     };
 
     fetchTransactions();
   }, []);
 
-  const handleAddTransaction = (newTransaction) => {
-    setTransactions([...transactions, newTransaction]);
-  };
-
   const handleSearch = (term) => {
     setSearchTerm(term);
+  };
+
+  const handleAddTransaction = (newTransaction) => {
+    // Here you might add logic to send data to your backend
+    setTransactions(prevTransactions => [...prevTransactions, newTransaction]);
   };
 
   const filteredTransactions = transactions.filter(transaction =>
@@ -41,13 +56,12 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Bank of Flatiron</h1>
-      <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
-      <TransactionForm onAddTransaction={handleAddTransaction} />
-      {error && <p className="error">Error: {error}</p>}
+      <SearchBar setSearchTerm={handleSearch} transactions={filteredTransactions} />
+      <TransactionForm addTransaction={handleAddTransaction} />
       <TransactionTable transactions={filteredTransactions} />
     </div>
   );
-};
+}
 
 export default App;
+
