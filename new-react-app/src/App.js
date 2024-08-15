@@ -9,7 +9,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:8001/transactions')
+    fetch('https://json-flatiron-bank.vercel.app/')
       .then(response => response.json())
       .then(data => setTransactions(data))
       .catch(error => console.error('Error fetching data:', error));
@@ -20,7 +20,7 @@ function App() {
   };
 
   const handleAddTransaction = (newTransaction) => {
-    fetch('http://localhost:8001/transactions', {
+    fetch('https://json-flatiron-bank.vercel.app/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
